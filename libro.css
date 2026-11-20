@@ -117,10 +117,22 @@
   text-align:center;
 }
 
-.intro-lazo{
-  width:48px;
-  margin-bottom:22px;
+/* Trío de stickers sobre el título */
+.intro-stickers{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:24px;
 }
+
+.intro-stickers .sticker{
+  position:relative;
+  z-index:auto;
+}
+
+.intro-stickers .st-corazon{ width:40px; transform:rotate(-12deg); }
+.intro-stickers .st-lazo   { width:56px; transform:translateY(-6px); }
+.intro-stickers .st-flor   { width:42px; transform:rotate(14deg); }
 
 .intro-titulo{
   font-size:var(--fs-titulo);
@@ -209,7 +221,15 @@
   margin:0 auto;
 }
 
-/* Cinta de rayas sujetando la foto */
+/* Flor que asoma en la esquina de la foto */
+.foto-flor{
+  right:-16px;
+  bottom:-14px;
+  width:52px;
+  transform:rotate(16deg);
+}
+
+/* Cinta sujetando la foto (misma cinta que el post-it) */
 .photo-cinta{
   top:-11px;
   left:50%;
@@ -281,7 +301,7 @@
 
 /* Notebooks bajas */
 @media (min-width:901px) and (max-height:760px){
-  .intro-lazo{ width:36px; margin-bottom:14px; }
+  .intro-stickers{ margin-bottom:14px; }
   .intro-titulo{ margin-bottom:16px; }
   .intro-texto p{ margin-bottom:8px; }
   .entry-photo img{ max-height:46vh; }
@@ -292,7 +312,7 @@
 
   .intro-carta{ padding:6px 0 20px; }
 
-  .intro-lazo{ width:36px; margin-bottom:14px; }
+  .intro-stickers{ margin-bottom:14px; }
 
   .intro-titulo{
     margin-bottom:16px;
@@ -322,6 +342,10 @@
   .entry-photo img{ max-height:34vh; }
 
   .photo-cinta{ width:70px; height:18px; top:-9px; }
+  .foto-flor{ width:40px; right:-10px; bottom:-10px; }
+  .intro-stickers .st-corazon{ width:32px; }
+  .intro-stickers .st-lazo   { width:44px; }
+  .intro-stickers .st-flor   { width:34px; }
 
   .entry-num{ margin-bottom:6px; }
 
@@ -358,7 +382,7 @@
 
 /* Celular en horizontal */
 @media (max-height:500px) and (orientation:landscape){
-  .intro-lazo{ display:none; }
+  .intro-stickers{ display:none; }
   .intro-titulo{ margin-bottom:10px; }
   .intro-texto p{ line-height:1.5; margin-bottom:4px; }
   .entry-photo img{ max-height:58vh; }

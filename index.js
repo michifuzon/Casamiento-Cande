@@ -65,6 +65,7 @@ function abrirLibro() {
     .forEach((el, i) => { el.style.transitionDelay = `${baseDelay + i * 0.11}s`; });
 
   book.classList.add('fields-ready');
+  document.getElementById('perritaWrap')?.classList.add('peeking');
 }
 
 function cerrarLibro() {
@@ -335,7 +336,104 @@ function reiniciarFormulario() {
   document.querySelectorAll('.field-float').forEach(w => w.classList.remove('filled', 'focused'));
   document.querySelector('.page').scrollTop = 0;
   clickText.classList.remove('hidden');
+  document.getElementById('perritaWrap')?.classList.remove('peeking');
 }
+
+// ══════════════════════════════════════════════════════════════════════
+//  PERRITA QUE ESPÍA — misma lógica que "FAU PEEK" de Cumple Fau 2026:
+//  sube, se sacude y vuelve a bajar despacio. El original cambiaba a
+//  fau2.png durante la sacudida; acá hay una sola imagen.
+// ══════════════════════════════════════════════════════════════════════
+
+(function () {
+  const wrap = document.getElementById('perritaWrap');
+  const peek = wrap?.querySelector('.perrita-peek');
+  if (!wrap || !peek) return;
+
+  // Cuánto sube: casi entera (12%) si entra debajo del libro; si no, lo justo
+  // para no tapar campos ni botones.
+  function calcularAsomo() {
+    const alto  = peek.offsetHeight;
+    if (!alto) return;
+    const libro  = book.getBoundingClientRect();
+    const campos = form.getBoundingClientRect();
+    // ¿La perrita quedaría debajo de la columna de campos?
+    const solapa = campos.right > window.innerWidth - peek.offsetWidth;
+    const lugar  = solapa ? window.innerHeight - libro.bottom - 6 : alto;
+    const pct    = Math.min(60, Math.max(12, (1 - lugar / alto) * 100));   // 12%: el borde del recorte queda escondido
+    wrap.style.setProperty('--asomo', pct.toFixed(1) + '%');
+  }
+
+  if (peek.complete) calcularAsomo();
+  peek.addEventListener('load', calcularAsomo);
+  window.addEventListener('resize', calcularAsomo);
+
+  let seq            = 0;      // contador de secuencia — cancela callbacks huérfanos
+  let descendHandler = null;   // referencia al transitionend de bajada activo
+
+  function cancelarSecuencia() {
+    seq++;
+    wrap.style.transition = '';
+    wrap.classList.remove('peeking');
+    peek.classList.remove('angry');
+    if (descendHandler) {
+      wrap.removeEventListener('transitionend', descendHandler);
+      descendHandler = null;
+    }
+  }
+
+  peek.addEventListener('click', () => {
+    if (peek.classList.contains('angry')) return;
+
+    cancelarSecuencia();
+    const currentSeq = seq;
+
+    // Posición actual del wrapper
+    const matrix = new DOMMatrix(window.getComputedStyle(wrap).transform);
+    const pct    = (matrix.m42 / wrap.offsetHeight) * 100;
+    wrap.style.transform = `translateY(${pct.toFixed(1)}%)`;
+
+    calcularAsomo();
+    const angryPos = 'translateY(var(--asomo))';
+
+    // Subir hasta la posición de sacudida
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (seq !== currentSeq) return;
+      wrap.style.transition = 'transform 0.7s ease-out';
+      wrap.style.transform  = angryPos;
+    }));
+
+    // Sacudirse cuando termina la subida
+    setTimeout(() => {
+      if (seq !== currentSeq) return;
+      wrap.style.transition = '';
+      peek.classList.add('angry');
+
+      peek.addEventListener('animationend', () => {
+        if (seq !== currentSeq) return;
+        peek.classList.remove('angry');
+
+        // Bajar despacio
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          if (seq !== currentSeq) return;
+          wrap.style.transition = 'transform 3.5s ease-in-out';
+          wrap.style.transform  = 'translateY(110%)';
+        }));
+
+        descendHandler = function () {
+          wrap.removeEventListener('transitionend', descendHandler);
+          descendHandler = null;
+          if (seq !== currentSeq) return;
+          wrap.style.transition = '';
+          wrap.style.transform  = '';
+          wrap.classList.add('peeking');
+        };
+        wrap.addEventListener('transitionend', descendHandler);
+
+      }, { once: true });
+    }, 750); // espera los 700 ms de la subida + margen
+  });
+}());
 
 closeThanks.addEventListener('click', cerrarPopup);
 thanksModal.addEventListener('click', e => { if (e.target === thanksModal) cerrarPopup(); });

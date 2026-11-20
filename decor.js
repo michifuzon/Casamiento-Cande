@@ -69,6 +69,26 @@
       </g>
     </symbol>
 
+    <!-- Ramita oliva pintada -->
+    <symbol id="i-ramita-pintada" viewBox="0 0 120 220">
+      <g filter="url(#pintado)">
+        <path d="M60 214 C58 160 56 100 66 12" fill="none" stroke="#69754D" stroke-width="5" stroke-linecap="round"/>
+        <g fill="#69754D">
+          <ellipse cx="40" cy="178" rx="22" ry="10" transform="rotate(-32 40 178)"/>
+          <ellipse cx="80" cy="150" rx="22" ry="10" transform="rotate(30 80 150)"/>
+          <ellipse cx="38" cy="122" rx="20" ry="9.5" transform="rotate(-36 38 122)"/>
+          <ellipse cx="82" cy="96" rx="19" ry="9" transform="rotate(32 82 96)"/>
+          <ellipse cx="44" cy="70" rx="17" ry="8" transform="rotate(-38 44 70)"/>
+          <ellipse cx="82" cy="44" rx="15" ry="7.5" transform="rotate(35 82 44)"/>
+        </g>
+        <g fill="#A2AD91" opacity=".7">
+          <ellipse cx="44" cy="174" rx="12" ry="4" transform="rotate(-32 44 174)"/>
+          <ellipse cx="76" cy="146" rx="12" ry="4" transform="rotate(30 76 146)"/>
+          <ellipse cx="42" cy="118" rx="11" ry="4" transform="rotate(-36 42 118)"/>
+        </g>
+      </g>
+    </symbol>
+
     <!-- Cámara (ícono de interfaz, sin acabado pintado) -->
     <symbol id="i-camara" viewBox="0 0 24 24">
       <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"
@@ -80,6 +100,27 @@
 </svg>`;
 
   document.body.insertAdjacentHTML('afterbegin', SPRITE);
+
+
+  // ── STICKERS DEL FONDO ──────────────────────────────────────────────
+  // Moños, flores, corazones y ramitas que asoman por detrás del libro.
+  const STICKER = {
+    lazo:    ['i-lazo',             '0 0 200 170'],
+    flor:    ['i-flor-azul',        '0 0 200 200'],
+    corazon: ['i-corazon-pintado',  '0 0 200 184'],
+    ramita:  ['i-ramita-pintada',   '0 0 120 220']
+  };
+
+  const FONDO = ['flor', 'lazo', 'corazon', 'ramita', 'flor', 'lazo', 'corazon', 'flor', 'ramita', 'lazo'];
+
+  const fondo = document.createElement('div');
+  fondo.className = 'fondo-stickers';
+  fondo.setAttribute('aria-hidden', 'true');
+  fondo.innerHTML = FONDO.map((tipo, i) => {
+    const [id, vb] = STICKER[tipo];
+    return `<span class="sticker fs fs-${i + 1} st-${tipo}"><svg viewBox="${vb}"><use href="#${id}"/></svg></span>`;
+  }).join('');
+  document.body.insertAdjacentElement('afterbegin', fondo);
 
 
   // ── ¿CARGÓ LA FOTO DE PORTADA? ──────────────────────────────────────

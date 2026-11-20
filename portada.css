@@ -420,6 +420,55 @@ button{
 .st-corazon{ aspect-ratio:200/184; }
 .st-flor{ aspect-ratio:1; }
 .st-lazo{ aspect-ratio:200/170; color:var(--bordo); }
+.st-ramita{ aspect-ratio:120/220; }
+.st-perrita{ aspect-ratio:900/867; z-index:3; }
+
+.st-perrita img{
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+/* Sticker chiquito que acompaña un texto (títulos, números) */
+.sticker-inline{
+  position:relative;
+  display:inline-block;
+  width:1.1em;
+  margin-left:.25em;
+  vertical-align:-.1em;
+  filter:var(--sticker);
+}
+
+.sticker-inline svg{
+  display:block;
+  width:100%;
+  height:auto;
+  overflow:visible;
+}
+
+/* ── Stickers del fondo: asoman por detrás del libro ── */
+
+.fondo-stickers{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+  pointer-events:none;
+  --escala:1;
+}
+
+.fs{ width:calc(var(--t) * var(--escala)); z-index:0; }
+
+.fs-1 { --t:74px; left:1.5vw;  top:13vh;    transform:rotate(-12deg); }
+.fs-2 { --t:84px; left:1.2vw;  top:50vh;    transform:rotate(14deg); }
+.fs-3 { --t:66px; left:3.5vw;  bottom:5vh;  transform:rotate(-8deg); }
+.fs-4 { --t:48px; right:1.6vw; top:17vh;    transform:rotate(12deg); }
+.fs-5 { --t:66px; right:1.8vw; bottom:36vh; transform:rotate(22deg); }   /* arriba de la perrita */
+.fs-6 { --t:72px; right:22vw;  bottom:1vh;  transform:rotate(-12deg); }   /* a la izquierda de la perrita */
+.fs-7 { --t:46px; right:12vw;  top:1.5vh;   transform:rotate(10deg); }
+.fs-8 { --t:42px; left:28vw;   bottom:1.2vh;transform:rotate(-16deg); }
+.fs-9 { --t:34px; left:20vw;   top:.5vh;    transform:rotate(76deg); }
+.fs-10{ --t:52px; right:32vw;  top:1vh;     transform:rotate(-6deg); }
 
 /* ── Cande ── */
 
@@ -489,17 +538,13 @@ button{
     0 14px 26px rgba(50,12,22,.28);
 }
 
-/* Cinta salvia que sujeta la tarjeta */
-.portada-tarjeta::before{
-  content:'';
-  position:absolute;
+/* Cinta (estilo común en .cinta; selector más específico para el tamaño) */
+.portada .portada-tarjeta::before{
   top:-.55em;
   left:50%;
   width:5.2em;
   height:1.25em;
   transform:translateX(-50%) rotate(-3deg);
-  background:rgba(162,173,145,.82);
-  clip-path:polygon(0 8%, 4% 0, 9% 10%, 14% 0, 100% 4%, 97% 50%, 100% 96%, 92% 100%, 86% 90%, 80% 100%, 0 94%, 3% 50%);
 }
 
 .pt-bride{
@@ -556,9 +601,12 @@ button{
 .portada-tarjeta .pt-tobe { font-size:min(11cqh, 6.2cqw); margin-top:-1.5cqh; }
 .portada-tarjeta .pt-fecha{ font-size:min(2.7cqh, 1.5cqw); margin-top:4cqh; }
 
-.st-corazon{ left:8cqw;  top:12cqh;    width:min(21cqh, 12cqw); transform:rotate(-14deg); }
-.st-flor   { left:13cqw; bottom:10cqh; width:min(16cqh, 9cqw);  transform:rotate(12deg); }
-.st-lazo   { position:absolute; right:-4%; top:-8%; width:24%; transform:rotate(16deg); }
+.portada .st-corazon{ left:8cqw;  top:12cqh;    width:min(21cqh, 12cqw); transform:rotate(-14deg); }
+.portada .st-flor   { right:5cqw; bottom:7cqh;  width:min(14cqh, 8cqw);  transform:rotate(12deg); }
+.portada .st-lazo   { position:absolute; right:-4%; top:-8%; width:24%; transform:rotate(16deg); }
+
+.portada .st-flor.st-flor-2{ left:19cqw; top:33cqh; bottom:auto; width:min(9cqh, 5cqw); transform:rotate(-20deg); }
+.portada .st-perrita{ left:6cqw; bottom:5cqh; width:min(44cqh, 25cqw); }
 
 /* ── Composición vertical (celular / tablet vertical) ── */
 
@@ -566,8 +614,8 @@ button{
 
   .portada-foto{
     left:50%;
-    top:5cqh;
-    height:62cqh;
+    top:12cqh;
+    height:55cqh;
     transform:translateX(-50%);
   }
 
@@ -575,20 +623,22 @@ button{
     left:50%;
     right:auto;
     top:auto;
-    bottom:6cqh;
-    width:74cqw;
-    padding:5cqh 6cqw 4.4cqh;
+    bottom:3.5cqh;
+    width:68cqw;
+    padding:3.6cqh 6cqw 3cqh;
     font-size:3.4cqw;
     transform:translateX(-50%) rotate(-2deg);
   }
 
-  .portada-tarjeta .pt-bride{ font-size:19cqw; }
-  .portada-tarjeta .pt-tobe { font-size:14cqw; margin-top:-1.8cqw; }
-  .portada-tarjeta .pt-fecha{ font-size:3.3cqw; margin-top:2.6cqh; }
+  .portada-tarjeta .pt-bride{ font-size:16cqw; }
+  .portada-tarjeta .pt-tobe { font-size:12cqw; margin-top:-1.6cqw; }
+  .portada-tarjeta .pt-fecha{ font-size:3.3cqw; margin-top:2cqh; }
 
-  .st-corazon{ left:5cqw;  top:7cqh;  width:22cqw; }
-  .st-flor   { left:auto; right:5cqw; bottom:auto; top:44cqh; width:17cqw; }
-  .st-lazo   { right:-5%; top:-14%; width:22%; }
+  .portada .st-corazon{ left:5cqw;  top:7cqh;  width:22cqw; }
+  .portada .st-flor   { left:auto; right:5cqw; bottom:auto; top:30cqh; width:15cqw; }
+  .portada .st-lazo   { right:-5%; top:-14%; width:22%; }
+  .portada .st-flor.st-flor-2{ left:7cqw; right:auto; top:31cqh; width:11cqw; }
+  .portada .st-perrita{ left:auto; right:13cqw; bottom:auto; top:52cqh; width:29cqw; }
 
   .foto-cande{
     background-image:var(--foto-cande-movil);
@@ -651,11 +701,9 @@ button{
   color:var(--bordo-oscuro);
 }
 
+/* Misma tipografía que el resto del título; solo cambia el color */
 .titulo-serif em{
-  font-family:var(--script);
   font-style:normal;
-  font-weight:400;
-  font-size:1.18em;
   color:var(--bordo);
 }
 
@@ -671,14 +719,16 @@ button{
   height:100%;
 }
 
-/* Cinta de papel con rayas (detalle de la invitación) */
-.cinta-rayas{
+/* Cinta verde oliva: LA misma en la tarjeta de portada, el post-it y las fotos */
+.cinta,
+.portada-tarjeta::before,
+.postit::before{
+  content:'';
   position:absolute;
   width:84px;
   height:22px;
-  background:linear-gradient(rgba(116,29,53,.08), rgba(116,29,53,.08)), var(--rayas) 0 0 / auto 260px, #F1EDE6;
-  opacity:.92;
-  box-shadow:0 1px 2px rgba(50,12,22,.15);
+  background:var(--oliva);
+  opacity:.9;
   clip-path:polygon(0 8%, 4% 0, 9% 10%, 14% 0, 100% 4%, 97% 50%, 100% 96%, 92% 100%, 86% 90%, 80% 100%, 0 94%, 3% 50%);
 }
 
@@ -766,6 +816,19 @@ button{
     overflow-x:hidden;
     overflow-y:auto;
   }
+
+  .fondo-stickers{ --escala:.62; }
+
+  /* En vertical los stickers del fondo van arriba y abajo del libro */
+  .fs-1 { left:4vw;   top:2.5vh; }
+  .fs-2 { left:-2vw;  top:46vh; }
+  .fs-4 { right:22vw; top:1vh; transform:rotate(70deg); }
+  .fs-5 { right:-1vw; bottom:24vh; }
+  .fs-7 { right:40vw; top:2vh; }
+  .fs-8 { left:8vw;   bottom:1.5vh; }
+  .fs-6 { right:46vw;  bottom:1.5vh; }   /* lejos de la perrita que asoma */
+  .fs-9 { left:30vw;  top:.5vh; }
+  .fs-10{ right:4vw;  top:3vh; display:none; }
 
   .scene{
     width:100%;

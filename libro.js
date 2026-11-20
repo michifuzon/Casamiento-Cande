@@ -176,7 +176,11 @@ function htmlIntro(page) {
     <div class="single-page-content intro-page">
 
       <div class="intro-carta">
-        <span class="lazo-icono intro-lazo" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#i-lazo"/></svg></span>
+        <span class="intro-stickers" aria-hidden="true">
+          <span class="sticker st-corazon"><svg viewBox="0 0 200 184"><use href="#i-corazon-pintado"/></svg></span>
+          <span class="sticker st-lazo"><svg viewBox="0 0 200 170"><use href="#i-lazo"/></svg></span>
+          <span class="sticker st-flor"><svg viewBox="0 0 200 200"><use href="#i-flor-azul"/></svg></span>
+        </span>
 
         <h1 class="titulo-serif intro-titulo">Para <em>Cande</em>, con todo nuestro amor</h1>
 
@@ -204,7 +208,8 @@ function htmlMensaje(page) {
   const foto   = entry.fotoUrl
     ? `
       <figure class="entry-photo" style="--photo-r:${giro}">
-        <span class="cinta-rayas photo-cinta" aria-hidden="true"></span>
+        <span class="cinta photo-cinta" aria-hidden="true"></span>
+        <span class="sticker foto-flor st-flor" aria-hidden="true"><svg viewBox="0 0 200 200"><use href="#i-flor-azul"/></svg></span>
         <img src="${escapeHtml(entry.fotoUrl)}" alt="Foto que mandó ${nombre}" decoding="async" />
       </figure>`
     : '';
@@ -215,7 +220,7 @@ function htmlMensaje(page) {
       <article class="entry-card ${entry.fotoUrl ? 'has-photo' : 'solo-texto'}">
         ${foto}
         <div class="entry-body">
-          <span class="entry-num">N.º ${numero}</span>
+          <span class="entry-num">N.º ${numero}${stickerChico(i)}</span>
           <h2 class="titulo-serif entry-name">${nombre}</h2>
           <div class="entry-text">${escapeHtml(entry.mensaje || '').trim()}</div>
         </div>
@@ -223,6 +228,17 @@ function htmlMensaje(page) {
 
       ${htmlNav()}
     </div>`;
+}
+
+// Sticker chiquito junto al número: alterna moño, flor y corazón
+function stickerChico(i) {
+  const tipos = [
+    ['i-lazo', '0 0 200 170'],
+    ['i-flor-azul', '0 0 200 200'],
+    ['i-corazon-pintado', '0 0 200 184']
+  ];
+  const [id, vb] = tipos[i % tipos.length];
+  return `<span class="sticker-inline" aria-hidden="true"><svg viewBox="${vb}"><use href="#${id}"/></svg></span>`;
 }
 
 function htmlNav() {
@@ -324,7 +340,7 @@ function mensajesDemo() {
   return [
     {
       nombre:  'Invitada de ejemplo',
-      mensaje: 'Este es un mensaje de ejemplo para ver cómo queda una página con foto.\n\nAcá va a aparecer, completo y con sus saltos de línea, lo que cada persona le escriba a Cande',
+      mensaje: 'Este es un mensaje de ejemplo para ver cómo queda una página con foto.\n\nAcá va a aparecer, completo y con sus saltos de línea, lo que cada persona le escriba a Cande.',
       fotoUrl: 'assets/candela-portada.webp'
     },
     {
