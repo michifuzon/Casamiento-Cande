@@ -134,7 +134,7 @@
 }
 
 .intro-stickers .st-corazon{ width:40px; transform:rotate(-12deg); }
-.intro-stickers .st-lazo   { width:56px; transform:translateY(-6px); }
+.intro-stickers .st-lazo   { width:56px; transform:translateY(-6px) rotate(18deg); }   /* inclinado, sentido horario */
 .intro-stickers .st-flor   { width:42px; transform:rotate(14deg); }
 
 .intro-titulo{
@@ -241,6 +241,11 @@
   top:-11px;
   left:50%;
   transform:translateX(-50%) rotate(-3deg);
+}
+
+/* Moñito/flor/corazón junto al número: inclinado en sentido horario */
+.entry-num .sticker-inline{
+  transform:rotate(18deg);
 }
 
 .entry-num{
