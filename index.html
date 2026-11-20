@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#ECE8DF" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <title>Bride to be · Cande</title>
+    <meta name="description" content="Dejale unas palabras a Cande para su libro de recuerdos" />
+    <meta property="og:title" content="Bride to be · Cande" />
+    <meta property="og:description" content="Dejale unas palabras a Cande para su libro de recuerdos" />
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎀</text></svg>" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&family=DM+Sans:opsz,wght@9..40,400..600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="preload" as="image" href="assets/candela-portada.webp" />
+    <link rel="preload" as="image" href="assets/rayas-acuarela.webp" />
+    <link rel="stylesheet" href="portada.css" />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+
+  <body>
+    <script src="decor.js"></script>
+
+    <div class="scene">
+      <div class="book" id="book">
+
+        <!-- ═════════════ TAPA ═════════════ -->
+        <div class="book-cover" id="bookCover" role="button" tabindex="0" aria-label="Abrir el libro de Cande">
+          <div class="cover-front">
+            <div class="portada">
+              <h1 class="sr-only">Bride to be · Candela · 05.12.2026</h1>
+
+              <span class="sticker st-corazon" aria-hidden="true"><svg viewBox="0 0 200 184"><use href="#i-corazon-pintado"/></svg></span>
+
+              <!-- Foto: se configura en portada.css (bloque "FOTO DE CANDELA") -->
+              <figure class="portada-foto">
+                <div class="foto-placeholder" aria-hidden="true"><span class="mono">C</span></div>
+                <div class="foto-cande" role="img" aria-label="Candela vestida de novia"></div>
+              </figure>
+
+              <span class="sticker st-flor" aria-hidden="true"><svg viewBox="0 0 200 200"><use href="#i-flor-azul"/></svg></span>
+
+              <div class="portada-tarjeta" aria-hidden="true">
+                <span class="pt-bride">Bride</span>
+                <span class="pt-tobe">to be</span>
+                <span class="pt-fecha">05.12.2026</span>
+                <span class="sticker st-lazo"><svg viewBox="0 0 200 170"><use href="#i-lazo"/></svg></span>
+              </div>
+            </div>
+          </div>
+          <div class="cover-back" aria-hidden="true"></div>
+        </div>
+
+        <!-- ═════════════ INTERIOR ═════════════ -->
+        <div class="book-inside">
+
+          <div class="spiral" aria-hidden="true">
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+          </div>
+
+          <div class="book-content">
+            <button type="button" class="book-close" id="bookClose" aria-label="Cerrar el libro">✕</button>
+
+            <div class="page">
+              <form
+                id="guestForm"
+                class="form-section"
+                name="mensajes-candela"
+                method="POST"
+                data-netlify="true"
+                netlify-honeypot="bot-field"
+                enctype="multipart/form-data"
+                novalidate
+              >
+                <input type="hidden" name="form-name" value="mensajes-candela" />
+
+                <p hidden>
+                  <label>No completar: <input name="bot-field" /></label>
+                </p>
+
+                <header class="top-title">
+                  <h2 class="titulo-serif form-h1">Dejale a <em>Cande</em> unas palabras</h2>
+                  <p class="subtitle">Un mensaje, un recuerdo o unas palabras para acompañarla en este momento tan especial.</p>
+                </header>
+
+                <aside class="postit" aria-label="Ideas para escribir">
+                  <span class="postit-titulo">¿No sabés qué escribir?</span>
+                  <ul>
+                    <li>Un recuerdo con ella</li>
+                    <li>Algo que admirás de Cande</li>
+                    <li>Un deseo para esta etapa</li>
+                  </ul>
+                </aside>
+
+                <div class="form-fields">
+
+                  <div class="field-group">
+                    <div class="field-float">
+                      <input type="text" id="nombre" name="nombre" required placeholder=" " autocomplete="name" enterkeyhint="next" />
+                      <label class="field-label" for="nombre">Nombre completo</label>
+                    </div>
+                  </div>
+
+                  <div class="field-group">
+                    <div class="field-float field-float--ta">
+                      <textarea id="mensaje" name="mensaje" rows="5" required placeholder=" "></textarea>
+                      <label class="field-label" for="mensaje">Escribí acá…</label>
+                    </div>
+                    <div class="char-counter" id="charCounter"><span id="charCount">0</span> caracteres</div>
+                  </div>
+
+                  <div class="field-group">
+                    <div class="upload-row" id="uploadArea">
+                      <input type="file" id="fotoInput" name="foto" accept="image/*" aria-label="Sumá una foto con Cande (opcional)" />
+                      <span class="upload-thumb" aria-hidden="true">
+                        <img id="preview-img" alt="" />
+                        <svg class="upload-icon"><use href="#i-camara"/></svg>
+                      </span>
+                      <span class="upload-row-text">
+                        <span class="upload-row-label" id="uploadLabel">Sumá una foto con Cande</span>
+                        <span class="upload-row-sub">Opcional</span>
+                      </span>
+                      <button type="button" class="upload-remove" id="fotoQuitar" aria-label="Quitar la foto">×</button>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-submit">Enviar mi mensaje</button>
+
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="click-text" id="clickText" role="button" tabindex="-1">
+        <span class="click-mouse">Hacé clic para abrir</span>
+        <span class="click-touch">Tocá para abrir</span>
+      </div>
+    </div>
+
+    <!-- ═════════════ BOTÓN INFO ═════════════ -->
+    <button class="info-btn" id="infoBtn" aria-label="Sobre esta página">i</button>
+
+    <!-- ═════════════ MODAL INFO ═════════════ -->
+    <div class="info-modal" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoTitulo">
+      <div class="info-card">
+        <button class="info-close" id="infoClose" aria-label="Cerrar">×</button>
+        <span class="lazo-icono card-lazo" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#i-lazo"/></svg></span>
+
+        <h2 class="titulo-serif" id="infoTitulo">Un libro de recuerdos para <em>Cande</em></h2>
+
+        <p>
+          Este espacio fue creado para reunir un pedacito de todas las personas que
+          quieren a Cande. Cada mensaje y fotografía formará parte de un libro de
+          recuerdos muy especial que le vamos a regalar por su casamiento.
+        </p>
+
+        <p class="info-secret">Es una sorpresa, ¡así que no le cuentes nada!</p>
+
+        <button type="button" class="btn info-open-btn" id="infoOpen">Abrir el libro</button>
+
+        <p class="info-pd">
+          PD: Si necesitás una página así, no dudes en contactarme, cobro baratito
+          <a href="https://wa.me/5493517628450" target="_blank" rel="noopener">+54 9 351 762 8450</a>!
+          Atte. Mia.
+        </p>
+      </div>
+    </div>
+
+    <!-- ═════════════ POPUP DE GRACIAS / AVISOS ═════════════ -->
+    <div class="thanks-modal" id="thanksModal" role="dialog" aria-modal="true" aria-labelledby="thanksTitle">
+      <div class="thanks-card">
+        <div class="thanks-icon" id="thanksIcon" aria-hidden="true"></div>
+        <h2 class="titulo-serif" id="thanksTitle">¡Tu mensaje ya es parte de su historia!</h2>
+        <p id="thanksText">Gracias por dejarle un recuerdo tan especial a Cande. Tu mensaje quedó guardado para sorprenderla.</p>
+        <button type="button" class="btn thanks-btn" id="closeThanks">Cerrar</button>
+      </div>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>

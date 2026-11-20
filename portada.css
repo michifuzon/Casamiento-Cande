@@ -1,0 +1,881 @@
+/* ══════════════════════════════════════════════════════════════════════
+   CASAMIENTO CANDELA CONTE · 05.12.2026
+   portada.css — base compartida por index.html y libro.html:
+   paleta, papel, libro 3D, espiral y portada.
+   Estética: papelería ilustrada — rayas bordó en acuarela, stickers
+   con borde blanco y serif editorial.
+   ══════════════════════════════════════════════════════════════════════ */
+
+
+/* ┌──────────────────────────────────────────────────────────────────┐
+   │  FOTO DE CANDELA — CONFIGURACIÓN                                 │
+   │                                                                  │
+   │  La foto vive en assets/. Se muestra como un sticker con borde   │
+   │  blanco sobre las rayas. Para cambiarla, reemplazá la ruta de    │
+   │  --foto-cande y, si hace falta, ajustá:                          │
+   │                                                                  │
+   │  · --foto-tamano : contain = figura recortada (PNG/WebP sin      │
+   │                    fondo, la actual) · cover = foto rectangular. │
+   │  · --foto-x / --foto-y : punto de anclaje (0% = izquierda/arriba │
+   │                    · 100% = derecha/abajo). Con foto rectangular │
+   │                    subí o bajá --foto-y para no cortar la cara.  │
+   │  · --foto-zoom : 1 = tamaño normal · 1.1 = 10 % más grande.      │
+   │  · Las variables -movil son para la portada vertical (celular).  │
+   │                                                                  │
+   │  Si la foto no carga, se ve un monograma "C" de respaldo.        │
+   └──────────────────────────────────────────────────────────────────┘ */
+
+:root{
+  --foto-cande:        url("assets/candela-portada.webp");
+  --foto-tamano:       contain;
+  --foto-x:            50%;
+  --foto-y:            100%;
+  --foto-zoom:         1;
+
+  --foto-cande-movil:  var(--foto-cande);
+  --foto-x-movil:      50%;
+  --foto-y-movil:      100%;
+  --foto-zoom-movil:   1;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   TOKENS
+   ══════════════════════════════════════════════════════════════════════ */
+
+:root{
+  /* Paleta de la invitación */
+  --bordo:         #741D35;   /* bordó profundo — protagonista */
+  --bordo-oscuro:  #501625;   /* bordó oscuro — textos */
+  --blanco:        #FAF8F4;   /* blanco cálido — protagonista */
+  --oliva:         #69754D;   /* complemento */
+  --salvia:        #A2AD91;   /* complemento */
+  --azul:          #527F98;   /* solo pequeños acentos */
+
+  /* Derivados */
+  --papel:         #FAF8F4;
+  --papel-fondo:   #ECE8DF;
+  --tinta:         #501625;
+  --tinta-suave:   #7C5A62;
+  --tinta-tenue:   #A8959A;
+  --linea:         rgba(116,29,53,.16);
+
+  --rayas: url("assets/rayas-acuarela.webp");
+  --textura-papel: url("assets/papel.webp");
+
+  --serif:   'Cormorant Garamond', 'Cormorant', Garamond, Georgia, serif;
+  --script:  'Pinyon Script', 'Snell Roundhand', cursive;
+  --sans:    'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Escala tipográfica única: mismo contenido → mismo tamaño */
+  --fs-titulo:   clamp(2.1rem, 3.1vw, 2.7rem);  /* títulos de página y modales */
+  --fs-nombre:   clamp(1.8rem, 2.6vw, 2.3rem);  /* nombre de quien escribe */
+  --fs-cuerpo:   1rem;                          /* textos y mensajes */
+  --fs-campo:    1rem;                          /* campos del formulario */
+  --fs-chico:    .78rem;                        /* contadores, notas */
+  --fs-etiqueta: .68rem;                        /* etiquetas en mayúscula, botones */
+
+  --ease-out:   cubic-bezier(.4,0,.2,1);
+  --ease-libro: cubic-bezier(.77,0,.18,1);
+
+  --radio-libro:  6px 12px 12px 6px;
+  --sombra-libro: 0 26px 50px rgba(80,22,37,.22), 0 4px 12px rgba(80,22,37,.12);
+
+  /* Contorno blanco tipo sticker (para ilustraciones y la foto) */
+  --sticker:
+    drop-shadow(3px 0 0 var(--blanco))
+    drop-shadow(-3px 0 0 var(--blanco))
+    drop-shadow(0 3px 0 var(--blanco))
+    drop-shadow(0 -3px 0 var(--blanco))
+    drop-shadow(0 8px 10px rgba(50,12,22,.28));
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   BASE
+   ══════════════════════════════════════════════════════════════════════ */
+
+*,
+*::before,
+*::after{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  background:var(--papel-fondo);
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
+
+body{
+  min-height:100vh;
+  min-height:100dvh;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  overflow:hidden;
+
+  font-family:var(--sans);
+  color:var(--tinta);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+
+  /* Papel con un leve tono salvia en los bordes */
+  background:
+    radial-gradient(90vmax 70vmax at 50% 45%, transparent 55%, rgba(162,173,145,.28) 100%),
+    var(--textura-papel) 0 0 / 320px 320px,
+    var(--papel-fondo);
+  background-blend-mode:normal, multiply, normal;
+}
+
+::selection{
+  background:rgba(116,29,53,.18);
+}
+
+:focus-visible{
+  outline:2px solid var(--bordo);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+button{
+  font:inherit;
+  color:inherit;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.sr-only{
+  position:absolute;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+  clip:rect(0 0 0 0);
+  white-space:nowrap;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   ESCENA Y LIBRO 3D (misma mecánica que el original)
+   ══════════════════════════════════════════════════════════════════════ */
+
+.scene{
+  position:relative;
+  z-index:1;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  perspective:3000px;
+}
+
+.book{
+  position:relative;
+  z-index:1;
+  flex-shrink:0;
+
+  width:min(1180px, 88vw);
+  height:min(680px, 82vh);
+  min-height:0;
+
+  transform-style:preserve-3d;
+  transition:transform .1s ease;
+}
+
+.book.open{
+  transition:transform .5s ease;
+}
+
+/* ── Tapa: dos caras (frente y reverso) ── */
+
+.book-cover{
+  position:absolute;
+  inset:0;
+  z-index:50;
+
+  border-radius:var(--radio-libro);
+
+  transform-origin:left center;
+  transform-style:preserve-3d;
+  transform:translateZ(1px);
+  transition:transform 1.8s var(--ease-libro);
+
+  cursor:pointer;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.book.open .book-cover{
+  transform:translateZ(1px) rotateY(-165deg);
+  pointer-events:none;
+}
+
+.cover-front,
+.cover-back{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  border-radius:inherit;
+  -webkit-backface-visibility:hidden;
+          backface-visibility:hidden;
+}
+
+.cover-front{
+  box-shadow:var(--sombra-libro);
+  transition:box-shadow 1.5s;
+}
+
+.book.open .cover-front{
+  box-shadow:none;
+}
+
+/* El reverso de la tapa también es de rayas */
+.cover-back{
+  transform:rotateY(180deg);
+  background:var(--rayas) 0 0 / auto 100% repeat-x, var(--blanco);
+}
+
+/* ── Interior ── */
+
+.book-inside{
+  position:relative;
+  z-index:1;
+
+  width:100%;
+  height:100%;
+
+  overflow:hidden;
+  border-radius:var(--radio-libro);
+
+  background:
+    var(--textura-papel) 0 0 / 320px 320px,
+    var(--papel);
+  box-shadow:
+    3px 0 0 -1px #EFEAE1,
+    6px 0 0 -2px #E2DBCF,
+    var(--sombra-libro);
+}
+
+/* Lomo: banda salvia muy clara + línea bordó */
+.book-inside::before{
+  content:'';
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  width:var(--lomo, 58px);
+  background:linear-gradient(to right, #E2E6D8, #EEF0E7 70%, rgba(250,248,244,0));
+  border-right:1px solid var(--linea);
+  pointer-events:none;
+}
+
+/* ── Espiral ── */
+
+.spiral{
+  position:absolute;
+  top:0;
+  left:12px;
+  z-index:20;
+
+  width:32px;
+  height:100%;
+  padding:48px 0;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-evenly;
+
+  pointer-events:none;
+}
+
+.ring{
+  position:relative;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:var(--oliva);
+  box-shadow:inset 0 2px 3px rgba(0,0,0,.35), 0 1px 0 #fff;
+}
+
+.ring::before{
+  content:'';
+  position:absolute;
+  top:50%;
+  left:-18px;
+  width:26px;
+  height:7px;
+  margin-top:-4px;
+  border-radius:999px;
+  background:linear-gradient(180deg, #F4F1EB 0%, #CBC4BA 55%, #A09689 100%);
+  box-shadow:0 2px 3px rgba(80,22,37,.25);
+  transform:rotate(-10deg);
+}
+
+/* ── Contenido ── */
+
+.book-content{
+  position:relative;
+  z-index:2;
+  width:100%;
+  height:100%;
+}
+
+.page{
+  position:relative;
+  width:100%;
+  height:100%;
+
+  padding:56px 76px 48px 104px;
+
+  overflow-x:hidden;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(116,29,53,.3) transparent;
+}
+
+.page::-webkit-scrollbar{ width:5px; }
+.page::-webkit-scrollbar-thumb{ background:rgba(116,29,53,.3); border-radius:3px; }
+
+/* ── Cinta marcapáginas para cerrar ── */
+
+.book-close{
+  position:absolute;
+  top:0;
+  right:24px;
+  z-index:30;
+
+  width:30px;
+  height:54px;
+  padding-bottom:13px;
+
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+
+  border:none;
+  cursor:pointer;
+
+  font-size:.8rem;
+  line-height:1;
+  color:var(--blanco);
+  background:var(--bordo);
+  clip-path:polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+
+  transition:height .25s var(--ease-out), background .25s;
+}
+
+.book-close:hover,
+.book-close:focus-visible{
+  height:62px;
+  background:var(--bordo-oscuro);
+  outline:none;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   PORTADA
+   Rayas bordó en acuarela · Cande como sticker · tarjeta de papel con
+   "Bride to be" · corazón y flor pintados (stickers).
+   ══════════════════════════════════════════════════════════════════════ */
+
+.cover-front{
+  container:portada / size;
+  /* Rayas anchas como en la invitación: en horizontal se escala la textura */
+  background:var(--rayas) 0 0 / auto 165% repeat-x, var(--blanco);
+}
+
+@media (max-width:900px) and (orientation:portrait){
+  .cover-front{ background-size:auto 100%, auto; }
+}
+
+.portada{
+  position:absolute;
+  inset:0;
+}
+
+/* ── Stickers ilustrados ── */
+
+.sticker{
+  position:absolute;
+  z-index:3;
+  display:block;
+  filter:var(--sticker);
+  pointer-events:none;
+}
+
+.sticker svg{
+  display:block;
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+
+.st-corazon{ aspect-ratio:200/184; }
+.st-flor{ aspect-ratio:1; }
+.st-lazo{ aspect-ratio:200/170; color:var(--bordo); }
+
+/* ── Cande ── */
+
+.portada-foto{
+  position:absolute;
+  z-index:2;
+  aspect-ratio:.735;
+}
+
+.foto-cande{
+  position:absolute;
+  inset:0;
+
+  background-image:var(--foto-cande);
+  background-size:var(--foto-tamano);
+  background-repeat:no-repeat;
+  background-position:var(--foto-x) var(--foto-y);
+
+  transform:scale(var(--foto-zoom));
+  transform-origin:var(--foto-x) var(--foto-y);
+
+  filter:var(--sticker);
+  pointer-events:none;
+}
+
+/* Respaldo si la foto no carga: sticker de papel con monograma */
+.foto-placeholder{
+  position:absolute;
+  inset:12% 8% 10%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:var(--blanco);
+  box-shadow:0 8px 18px rgba(50,12,22,.25);
+}
+
+.foto-placeholder .mono{
+  font-family:var(--script);
+  font-size:min(26cqh, 15cqw);
+  line-height:1;
+  color:var(--bordo);
+}
+
+.con-foto .foto-placeholder{
+  display:none;
+}
+
+/* ── Tarjeta de papel con el título ── */
+
+.portada-tarjeta{
+  position:absolute;
+  z-index:4;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  text-align:center;
+  color:var(--bordo);
+
+  background:
+    var(--textura-papel) 0 0 / 320px 320px,
+    var(--blanco);
+  box-shadow:
+    0 1px 1px rgba(50,12,22,.08),
+    0 14px 26px rgba(50,12,22,.28);
+}
+
+/* Cinta salvia que sujeta la tarjeta */
+.portada-tarjeta::before{
+  content:'';
+  position:absolute;
+  top:-.55em;
+  left:50%;
+  width:5.2em;
+  height:1.25em;
+  transform:translateX(-50%) rotate(-3deg);
+  background:rgba(162,173,145,.82);
+  clip-path:polygon(0 8%, 4% 0, 9% 10%, 14% 0, 100% 4%, 97% 50%, 100% 96%, 92% 100%, 86% 90%, 80% 100%, 0 94%, 3% 50%);
+}
+
+.pt-bride{
+  font-family:var(--serif);
+  font-weight:500;
+  line-height:.9;
+  letter-spacing:.02em;
+}
+
+.pt-tobe{
+  font-family:var(--script);
+  line-height:1;
+  color:var(--bordo-oscuro);
+}
+
+.pt-fecha{
+  display:flex;
+  align-items:center;
+  gap:.9em;
+
+  font-family:var(--serif);
+  font-weight:600;
+  letter-spacing:.32em;
+  color:var(--oliva);
+}
+
+.pt-fecha::before,
+.pt-fecha::after{
+  content:'';
+  width:1.6em;
+  height:1px;
+  background:currentColor;
+  opacity:.6;
+}
+
+/* ── Composición horizontal (escritorio / celular acostado) ── */
+
+.portada-foto{
+  left:24cqw;
+  top:6cqh;
+  height:90cqh;
+}
+
+.portada-tarjeta{
+  right:9cqw;
+  top:50%;
+  width:min(34cqw, 60cqh);
+  padding:7cqh 3cqw 6cqh;
+  font-size:min(2.5cqh, 1.45cqw);   /* base para la cinta (em) */
+  transform:translateY(-50%) rotate(2.5deg);
+}
+
+.portada-tarjeta .pt-bride{ font-size:min(15cqh, 8.4cqw); }
+.portada-tarjeta .pt-tobe { font-size:min(11cqh, 6.2cqw); margin-top:-1.5cqh; }
+.portada-tarjeta .pt-fecha{ font-size:min(2.7cqh, 1.5cqw); margin-top:4cqh; }
+
+.st-corazon{ left:8cqw;  top:12cqh;    width:min(21cqh, 12cqw); transform:rotate(-14deg); }
+.st-flor   { left:13cqw; bottom:10cqh; width:min(16cqh, 9cqw);  transform:rotate(12deg); }
+.st-lazo   { position:absolute; right:-4%; top:-8%; width:24%; transform:rotate(16deg); }
+
+/* ── Composición vertical (celular / tablet vertical) ── */
+
+@container portada (orientation: portrait){
+
+  .portada-foto{
+    left:50%;
+    top:5cqh;
+    height:62cqh;
+    transform:translateX(-50%);
+  }
+
+  .portada-tarjeta{
+    left:50%;
+    right:auto;
+    top:auto;
+    bottom:6cqh;
+    width:74cqw;
+    padding:5cqh 6cqw 4.4cqh;
+    font-size:3.4cqw;
+    transform:translateX(-50%) rotate(-2deg);
+  }
+
+  .portada-tarjeta .pt-bride{ font-size:19cqw; }
+  .portada-tarjeta .pt-tobe { font-size:14cqw; margin-top:-1.8cqw; }
+  .portada-tarjeta .pt-fecha{ font-size:3.3cqw; margin-top:2.6cqh; }
+
+  .st-corazon{ left:5cqw;  top:7cqh;  width:22cqw; }
+  .st-flor   { left:auto; right:5cqw; bottom:auto; top:44cqh; width:17cqw; }
+  .st-lazo   { right:-5%; top:-14%; width:22%; }
+
+  .foto-cande{
+    background-image:var(--foto-cande-movil);
+    background-position:var(--foto-x-movil) var(--foto-y-movil);
+    transform:scale(var(--foto-zoom-movil));
+    transform-origin:var(--foto-x-movil) var(--foto-y-movil);
+  }
+
+  .foto-placeholder .mono{ font-size:30cqw; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   "TOCÁ PARA ABRIR"
+   ══════════════════════════════════════════════════════════════════════ */
+
+.click-text{
+  margin-top:22px;
+  padding:10px 24px;
+
+  cursor:pointer;
+  touch-action:manipulation;
+
+  font-size:var(--fs-etiqueta);
+  font-weight:600;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--bordo);
+
+  animation:pulso 2.4s ease-in-out infinite;
+}
+
+.click-text.hidden{
+  visibility:hidden;
+  animation:none;
+  pointer-events:none;
+}
+
+.click-touch{ display:none; }
+
+@media (hover:none){
+  .click-mouse{ display:none; }
+  .click-touch{ display:inline; }
+}
+
+@keyframes pulso{
+  0%,100%{ opacity:.5; }
+  50%    { opacity:1;  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   PIEZAS COMUNES DEL INTERIOR
+   ══════════════════════════════════════════════════════════════════════ */
+
+.titulo-serif{
+  font-family:var(--serif);
+  font-weight:500;
+  line-height:1.05;
+  color:var(--bordo-oscuro);
+}
+
+.titulo-serif em{
+  font-family:var(--script);
+  font-style:normal;
+  font-weight:400;
+  font-size:1.18em;
+  color:var(--bordo);
+}
+
+.lazo-icono{
+  display:block;
+  aspect-ratio:200/170;
+  color:var(--bordo);
+}
+
+.lazo-icono svg{
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+/* Cinta de papel con rayas (detalle de la invitación) */
+.cinta-rayas{
+  position:absolute;
+  width:84px;
+  height:22px;
+  background:linear-gradient(rgba(116,29,53,.08), rgba(116,29,53,.08)), var(--rayas) 0 0 / auto 260px, #F1EDE6;
+  opacity:.92;
+  box-shadow:0 1px 2px rgba(50,12,22,.15);
+  clip-path:polygon(0 8%, 4% 0, 9% 10%, 14% 0, 100% 4%, 97% 50%, 100% 96%, 92% 100%, 86% 90%, 80% 100%, 0 94%, 3% 50%);
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:.5em;
+
+  padding:14px 26px;
+
+  border:1px solid var(--bordo);
+  border-radius:999px;
+  cursor:pointer;
+
+  font-family:var(--sans);
+  font-size:var(--fs-etiqueta);
+  font-weight:600;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  color:var(--blanco);
+  background:var(--bordo);
+
+  transition:background .2s, border-color .2s, color .2s;
+}
+
+.btn:hover{
+  background:var(--bordo-oscuro);
+  border-color:var(--bordo-oscuro);
+}
+
+/* Secundario: oliva */
+.btn--linea{
+  color:var(--oliva);
+  border-color:var(--oliva);
+  background:transparent;
+}
+
+.btn--linea:hover{
+  color:var(--blanco);
+  background:var(--oliva);
+  border-color:var(--oliva);
+}
+
+.btn:disabled{
+  opacity:.35;
+  cursor:not-allowed;
+  pointer-events:none;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* Monitores grandes: el libro crece con moderación */
+@media (min-width:1600px) and (min-height:900px){
+  .book{
+    width:min(1320px, 80vw);
+    height:min(760px, 78vh);
+  }
+}
+
+/* Celular y tablet en vertical */
+@media (max-width:900px) and (orientation:portrait){
+
+  :root{
+    --fs-titulo:  clamp(1.7rem, 7.4vw, 2.3rem);
+    --fs-nombre:  clamp(1.5rem, 6.4vw, 2rem);
+    --fs-cuerpo:  .94rem;
+    --fs-campo:   16px;    /* 16 px evita el zoom de iOS al tocar un campo */
+    --fs-chico:   .74rem;
+    --fs-etiqueta:.62rem;
+
+    --sticker:
+      drop-shadow(2px 0 0 var(--blanco))
+      drop-shadow(-2px 0 0 var(--blanco))
+      drop-shadow(0 2px 0 var(--blanco))
+      drop-shadow(0 -2px 0 var(--blanco))
+      drop-shadow(0 6px 8px rgba(50,12,22,.28));
+  }
+
+  body{
+    overflow-x:hidden;
+    overflow-y:auto;
+  }
+
+  .scene{
+    width:100%;
+    min-height:100dvh;
+    justify-content:center;
+    padding:20px 0;
+    overflow:hidden;   /* la tapa abierta no genera scroll horizontal */
+  }
+
+  .book{
+    /* 9:16 que siempre entra entero, dejando lugar para "Tocá para abrir" */
+    width:min(86vw, 520px, calc((100dvh - 110px) * 9 / 16));
+    height:auto;
+    aspect-ratio:9 / 16;
+    --radio-libro:5px 10px 10px 5px;
+  }
+
+  .book-cover{
+    transition-duration:.9s;
+    will-change:transform;
+  }
+
+  .book-inside{ --lomo:40px; }
+
+  .spiral{
+    left:7px;
+    width:24px;
+    padding:28px 0;
+  }
+
+  .ring{ width:9px; height:9px; }
+
+  .ring::before{
+    left:-12px;
+    width:18px;
+    height:6px;
+    margin-top:-3px;
+  }
+
+  .page{
+    padding:34px 20px 20px 54px;
+  }
+
+  .book-close{
+    right:12px;
+    width:24px;
+    height:40px;
+    padding-bottom:10px;
+    font-size:.68rem;
+  }
+
+  .book-close:hover,
+  .book-close:focus-visible{
+    height:46px;
+  }
+
+  .click-text{
+    margin-top:14px;
+  }
+}
+
+/* Celulares muy angostos (iPhone SE y similares) */
+@media (max-width:360px) and (orientation:portrait){
+  :root{
+    --fs-titulo:  1.6rem;
+    --fs-nombre:  1.4rem;
+    --fs-cuerpo:  .9rem;
+  }
+
+  .book-inside{ --lomo:34px; }
+  .spiral{ left:5px; }
+  .page{ padding:30px 12px 16px 44px; }
+}
+
+/* Celular en horizontal */
+@media (max-height:500px) and (orientation:landscape){
+
+  :root{
+    --fs-titulo:  1.5rem;
+    --fs-nombre:  1.4rem;
+    --fs-cuerpo:  .9rem;
+    --fs-campo:   16px;
+    --fs-chico:   .7rem;
+    --fs-etiqueta:.6rem;
+  }
+
+  body{ overflow:hidden; }
+
+  .scene{ padding:8px 0; }
+
+  .book{
+    width:min(92vw, 720px);
+    height:calc(100dvh - 56px);
+  }
+
+  .book-inside{ --lomo:44px; }
+
+  .spiral{ left:8px; width:26px; padding:16px 0; }
+
+  .page{
+    padding:20px 56px 14px 62px;
+  }
+
+  .click-text{
+    margin-top:8px;
+    padding:6px 16px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .book-cover{ transition-duration:.5s; }
+  .click-text{ animation:none; opacity:.8; }
+}

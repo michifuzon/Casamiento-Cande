@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#ECE8DF" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <title>Para Cande, con todo nuestro amor</title>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎀</text></svg>" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&family=DM+Sans:opsz,wght@9..40,400..600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="preload" as="image" href="assets/candela-portada.webp" />
+    <link rel="preload" as="image" href="assets/rayas-acuarela.webp" />
+    <link rel="stylesheet" href="portada.css" />
+    <link rel="stylesheet" href="libro.css" />
+  </head>
+
+  <body>
+    <script src="decor.js"></script>
+
+    <div class="scene">
+      <div class="book" id="book">
+
+        <!-- ═════════════ TAPA ═════════════ -->
+        <div class="book-cover" id="bookCover" role="button" tabindex="0" aria-label="Abrir el libro de Cande">
+          <div class="cover-front">
+            <div class="portada">
+              <h1 class="sr-only">Bride to be · Candela · 05.12.2026</h1>
+
+              <span class="sticker st-corazon" aria-hidden="true"><svg viewBox="0 0 200 184"><use href="#i-corazon-pintado"/></svg></span>
+
+              <!-- Foto: se configura en portada.css (bloque "FOTO DE CANDELA") -->
+              <figure class="portada-foto">
+                <div class="foto-placeholder" aria-hidden="true"><span class="mono">C</span></div>
+                <div class="foto-cande" role="img" aria-label="Candela vestida de novia"></div>
+              </figure>
+
+              <span class="sticker st-flor" aria-hidden="true"><svg viewBox="0 0 200 200"><use href="#i-flor-azul"/></svg></span>
+
+              <div class="portada-tarjeta" aria-hidden="true">
+                <span class="pt-bride">Bride</span>
+                <span class="pt-tobe">to be</span>
+                <span class="pt-fecha">05.12.2026</span>
+                <span class="sticker st-lazo"><svg viewBox="0 0 200 170"><use href="#i-lazo"/></svg></span>
+              </div>
+            </div>
+          </div>
+          <div class="cover-back" aria-hidden="true"></div>
+        </div>
+
+        <!-- ═════════════ INTERIOR ═════════════ -->
+        <div class="book-inside">
+
+          <div class="spiral" aria-hidden="true">
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+          </div>
+
+          <div class="book-content">
+            <button type="button" class="book-close" id="bookClose" aria-label="Cerrar el libro">✕</button>
+
+            <div class="page" id="pageScroll">
+
+              <div id="loadingState" class="empty-state">
+                <span class="lazo-icono estado-icono girando" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#i-lazo"/></svg></span>
+                <h2>Abriendo el libro…</h2>
+                <p>Un momento, estamos juntando los mensajes</p>
+              </div>
+
+              <div id="bookPage" class="digital-page" hidden>
+                <!-- libro.js arma cada página -->
+              </div>
+
+              <div id="emptyState" class="empty-state" hidden>
+                <span class="lazo-icono estado-icono" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#i-lazo"/></svg></span>
+                <h2>Todavía no hay mensajes</h2>
+                <p>Este libro está esperando sus primeras palabras.</p>
+              </div>
+
+              <div id="errorState" class="empty-state" hidden>
+                <span class="lazo-icono estado-icono" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#i-lazo"/></svg></span>
+                <h2 id="errorTitulo">No se pudieron cargar los mensajes</h2>
+                <p id="errorTexto">Probá abrir el libro de nuevo en un ratito.</p>
+                <button type="button" class="btn" id="reintentar">Reintentar</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="click-text" id="clickText" role="button" tabindex="-1">
+        <span class="click-mouse">Hacé clic para abrir</span>
+        <span class="click-touch">Tocá para abrir</span>
+      </div>
+    </div>
+
+    <script src="libro.js"></script>
+  </body>
+</html>
