@@ -8,14 +8,17 @@
    · NETLIFY_SITE_ID    (opcional)    ID del sitio de Cande. Si falta, se usa
                                       SITE_ID, que Netlify define solo.
    · NETLIFY_FORM_NAME  (opcional)    por defecto "mensajes-candela".
-   · LIBRO_CLAVE        (recomendada) si está definida, el libro solo se abre
-                                      con libro.html?clave=ESA_CLAVE.
+   · LIBRO_CLAVE        (obligatoria) contraseña del libro. Sin sesión
+                                      iniciada (ver functions/sesion.js) esta
+                                      función no devuelve nada.
 
    Separación con "Cumple Fau 2026": este sitio es otro sitio de Netlify
    (otro SITE_ID) y el formulario tiene otro nombre. Aunque por error se
    copiara el SITE_ID del cumpleaños, no existe ahí un formulario
    "mensajes-candela", así que la función responde 404 y no mezcla datos.
    ══════════════════════════════════════════════════════════════════════ */
+
+const { sesionValida, firmar, json: jsonResponseBase, noAutorizado } = require('../lib/sesion');
 
 const API = 'https://api.netlify.com/api/v1';
 const POR_PAGINA = 100;
@@ -26,18 +29,9 @@ exports.handler = async function (event) {
   const token    = process.env.NETLIFY_TOKEN;
   const siteId   = process.env.NETLIFY_SITE_ID || process.env.SITE_ID;
   const formName = process.env.NETLIFY_FORM_NAME || 'mensajes-candela';
-  const clave    = process.env.LIBRO_CLAVE;
 
-  // ── Acceso privado (opcional) ──
-  if (clave) {
-    const recibida =
-      (event.queryStringParameters && event.queryStringParameters.clave) ||
-      (event.headers && (event.headers['x-libro-clave'] || event.headers['X-Libro-Clave'])) ||
-      '';
-    if (recibida !== clave) {
-      return jsonResponse(401, { error: 'Acceso restringido' });
-    }
-  }
+  // ── Acceso privado: solo con sesión iniciada ──
+  if (!sesionValida(event.headers)) return noAutorizado();
 
   if (!token)  return jsonResponse(500, { error: 'Falta NETLIFY_TOKEN' });
   if (!siteId) return jsonResponse(500, { error: 'Falta NETLIFY_SITE_ID' });
@@ -87,10 +81,14 @@ exports.handler = async function (event) {
 
     const mensajes = submissions.map(item => {
       const data = item.data || {};
+      const foto = getFoto(data.foto) || getFoto(data.Foto);
       return {
+        id:        item.id || '',
         nombre:    data.nombre  || data.Nombre  || '',
         mensaje:   data.mensaje || data.Mensaje || '',
-        fotoUrl:   getFotoUrl(data.foto) || getFotoUrl(data.Foto) || '',
+        // La foto pasa por /.netlify/functions/foto, que también pide sesión
+        fotoUrl:   foto ? `/.netlify/functions/foto?u=${encodeURIComponent(foto.url)}&s=${firmar('foto:' + foto.url)}` : '',
+        fotoTipo:  foto ? foto.tipo : '',
         createdAt: item.created_at || ''
       };
     });
@@ -108,24 +106,16 @@ exports.handler = async function (event) {
 };
 
 function jsonResponse(statusCode, data) {
-  return {
-    statusCode,
-    headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-store'
-    },
-    body: JSON.stringify(data)
-  };
+  return jsonResponseBase(statusCode, data);
 }
 
-function getFotoUrl(foto) {
-  if (!foto) return '';
-  if (typeof foto === 'string') return foto;
-  if (Array.isArray(foto) && foto[0]) {
-    return foto[0].url || foto[0].secure_url || foto[0].href || '';
+function getFoto(foto) {
+  if (!foto) return null;
+  if (Array.isArray(foto)) foto = foto[0];
+  if (typeof foto === 'string') return foto ? { url: foto, tipo: '' } : null;
+  if (foto && typeof foto === 'object') {
+    const url = foto.url || foto.secure_url || foto.href || '';
+    return url ? { url, tipo: foto.type || '' } : null;
   }
-  if (typeof foto === 'object') {
-    return foto.url || foto.secure_url || foto.href || '';
-  }
-  return '';
+  return null;
 }

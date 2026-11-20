@@ -29,6 +29,15 @@
   <body>
     <script src="decor.js"></script>
 
+    <!-- ═════════════ BARRA PRIVADA (solo con sesión iniciada) ═════════════ -->
+    <header class="barra-privada" id="barraPrivada" hidden>
+      <span class="bp-cuenta" id="bpCuenta"></span>
+      <div class="bp-acciones">
+        <button type="button" class="btn btn--chico" id="btnTodas">Descargar todas las cartas</button>
+        <button type="button" class="btn btn--linea btn--chico" id="btnSalir">Cerrar sesión</button>
+      </div>
+    </header>
+
     <div class="scene">
       <div class="book" id="book">
 
@@ -114,6 +123,82 @@
       </div>
     </div>
 
+    <!-- ═════════════ INICIO DE SESIÓN ═════════════ -->
+    <div class="info-modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitulo">
+      <form class="info-card login-card" id="loginForm" novalidate>
+        <span class="sticker card-flor st-flor" aria-hidden="true"><svg viewBox="0 0 200 200"><use href="#i-flor-azul"/></svg></span>
+        <span class="sticker card-ramita st-ramita" aria-hidden="true"><svg viewBox="0 0 120 220"><use href="#i-ramita-pintada"/></svg></span>
+        <span class="lazo-icono card-lazo" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#i-lazo"/></svg></span>
+
+        <h2 class="titulo-serif" id="loginTitulo">El libro de <em>Cande</em></h2>
+        <p>Es privado. Ingresá la contraseña para leer los mensajes y descargar las cartas.</p>
+
+        <label class="sr-only" for="loginClave">Contraseña</label>
+        <input class="login-clave" type="password" id="loginClave" name="clave" autocomplete="current-password" placeholder="Contraseña" required />
+        <p class="login-error" id="loginError" role="alert"></p>
+
+        <button type="submit" class="btn info-open-btn" id="loginEntrar">Entrar</button>
+      </form>
+    </div>
+
+    <!-- ═════════════ DESCARGAR TODAS ═════════════ -->
+    <div class="info-modal" id="todasModal" role="dialog" aria-modal="true" aria-labelledby="todasTitulo">
+      <div class="info-card">
+        <button type="button" class="info-close" data-cerrar aria-label="Cerrar">×</button>
+        <span class="sticker card-flor st-flor" aria-hidden="true"><svg viewBox="0 0 200 200"><use href="#i-flor-azul"/></svg></span>
+        <h2 class="titulo-serif" id="todasTitulo">Descargar todas las cartas</h2>
+        <p id="todasTexto"></p>
+        <div class="todas-opciones">
+          <button type="button" class="btn opcion" data-formato="pdf">
+            <span>PDF completo</span><small>Libro_Candela_2026.pdf · listo para la imprenta</small>
+          </button>
+          <button type="button" class="btn btn--linea opcion" data-formato="zip">
+            <span>ZIP</span><small>Cartas_Candela_2026.zip · un PDF por carta</small>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═════════════ PROGRESO ═════════════ -->
+    <div class="info-modal" id="progresoModal" role="dialog" aria-modal="true" aria-labelledby="progresoTitulo">
+      <div class="info-card progreso-card">
+        <span class="lazo-icono card-lazo" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#i-lazo"/></svg></span>
+        <h2 class="titulo-serif" id="progresoTitulo">Armando las cartas…</h2>
+        <div class="progreso" role="progressbar" aria-labelledby="progresoTitulo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progresoBarra">
+          <span class="progreso-relleno" id="progresoRelleno"></span>
+        </div>
+        <p class="progreso-texto" id="progresoTexto" aria-live="polite"></p>
+        <ul class="lista-avisos" id="progresoAvisos" hidden></ul>
+        <button type="button" class="btn btn--linea" id="progresoBoton">Cancelar</button>
+      </div>
+    </div>
+
+    <!-- ═════════════ VISTA PREVIA A4 ═════════════ -->
+    <div class="vista-a4" id="vistaA4" role="dialog" aria-modal="true" aria-labelledby="vaTitulo" hidden>
+      <div class="va-barra">
+        <button type="button" class="va-flecha" id="vaCartaAnt" aria-label="Carta anterior">‹</button>
+        <h2 class="va-titulo" id="vaTitulo">Carta</h2>
+        <button type="button" class="va-flecha" id="vaCartaSig" aria-label="Carta siguiente">›</button>
+        <button type="button" class="va-cerrar" id="vaCerrar" aria-label="Cerrar la vista previa">×</button>
+      </div>
+
+      <div class="va-escenario" id="vaEscenario">
+        <div class="va-hoja" id="vaHoja"></div>
+        <p class="va-cargando" id="vaCargando">Armando la carta…</p>
+      </div>
+
+      <div class="va-pie">
+        <div class="va-hojas" id="vaHojas">
+          <button type="button" class="va-flecha" id="vaHojaAnt" aria-label="Hoja anterior">←</button>
+          <span id="vaHojaNum">Hoja 1 de 1</span>
+          <button type="button" class="va-flecha" id="vaHojaSig" aria-label="Hoja siguiente">→</button>
+        </div>
+        <ul class="lista-avisos" id="vaAvisos" hidden></ul>
+        <button type="button" class="btn" id="vaDescargar">Descargar carta PDF</button>
+      </div>
+    </div>
+
+    <script src="cartas.js"></script>
     <script src="libro.js"></script>
   </body>
 </html>
