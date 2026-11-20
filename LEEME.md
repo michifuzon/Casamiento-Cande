@@ -31,14 +31,17 @@ Libro digital de recuerdos para Cande (sorpresa). Copia independiente de
 
 ## Publicación (Netlify)
 
-1. Crear un **sitio nuevo** en Netlify conectado a este repositorio (no usar el sitio del cumpleaños).
-2. Build: sin comando; publish directory `.` (ya está en `netlify.toml`).
-3. En *Site configuration → Environment variables*:
-   - `NETLIFY_TOKEN`: token personal de Netlify (*User settings → Applications → Personal access tokens*).
-   - `LIBRO_CLAVE`: una palabra secreta (recomendado). El libro se abre con `/libro.html?clave=ESA_PALABRA`.
-   - `NETLIFY_SITE_ID`: opcional (Netlify ya define `SITE_ID` del propio sitio).
-4. En *Forms*, activar la detección de formularios y volver a desplegar. Tiene que aparecer el formulario `mensajes-candela`.
-5. Probar: mandar un mensaje de prueba desde `index.html`, abrir el libro con la clave, y después borrar el envío de prueba en *Forms*.
+Sitio: **casamientocande.netlify.app** (sitio propio, separado del cumpleaños). Netlify despliega solo con cada push a `main`.
+
+1. **Forms → Enable form detection.** Sin esto Netlify rechaza los envíos ("No se pudo enviar"). Se aplica recién en el próximo deploy.
+2. *Site configuration → Environment variables*:
+   - `NETLIFY_TOKEN` (**obligatoria**): token personal (*User settings → Applications → Personal access tokens*). Sin ella el libro responde "Falta NETLIFY_TOKEN".
+   - `NETLIFY_SITE_ID` (**recomendada**): el *Site ID* de este sitio (*Site configuration → General*).
+   - `LIBRO_CLAVE` (**muy recomendada**): una palabra secreta. Sin ella cualquiera que entre a `/libro.html` puede leer todos los mensajes. Con ella, el libro se abre con `/libro.html?clave=ESA_PALABRA`.
+3. *Deploys → Trigger deploy* (o hacer un push).
+4. Probar: en *Forms* tiene que aparecer `mensajes-candela`. Mandar un mensaje de prueba, abrir el libro con la clave y después borrar el envío de prueba desde *Forms*.
+
+La vista previa al compartir por WhatsApp usa `assets/og-portada.jpg` con la dirección absoluta del sitio. Si cambia el dominio, actualizar `og:url` y `og:image` en `index.html`. WhatsApp guarda la vista previa en caché un tiempo.
 
 ## Vista previa local
 

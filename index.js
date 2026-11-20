@@ -141,9 +141,27 @@ nombreInput.addEventListener('keydown', e => {
 //  FOTO: PREVIEW, ARRASTRAR Y QUITAR
 // ══════════════════════════════════════════════════════════════════════
 
+// ¿Es una imagen? Algunos celulares/PC no informan el tipo de las HEIC.
+function esImagen(file) {
+  if (file.type) return file.type.startsWith('image/');
+  return /.(jpe?g|png|gif|webp|heic|heif|avif)$/i.test(file.name || '');
+}
+
+const PESO_MAXIMO = 7.5 * 1024 * 1024;   // Netlify Forms acepta hasta ~8 MB por envío
+
 function mostrarPreview() {
   const file = fotoInput.files && fotoInput.files[0];
   if (!file) { quitarFoto(); return; }
+
+  if (!esImagen(file)) {
+    quitarFoto();
+    mostrarPopup('validacion', {
+      texto:  '!',
+      titulo: 'Ese archivo no es una foto',
+      cuerpo: 'Elegí una imagen de tu galería (JPG, PNG o HEIC).'
+    });
+    return;
+  }
 
   if (previewURL) URL.revokeObjectURL(previewURL);
   previewURL = URL.createObjectURL(file);
@@ -176,7 +194,7 @@ fotoQuitar.addEventListener('click', e => {
 );
 uploadArea.addEventListener('drop', e => {
   const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith('image/')) {
+  if (file) {
     const dt = new DataTransfer();
     dt.items.add(file);
     fotoInput.files = dt.files;
@@ -256,6 +274,18 @@ form.addEventListener('submit', async e => {
     const foto  = fotoInput.files && fotoInput.files[0];
     if (foto) {
       const lista = await prepararFoto(foto);
+      if (lista.size > PESO_MAXIMO) {
+        mostrarPopup('validacion', {
+          texto:  '!',
+          titulo: 'La foto es muy pesada',
+          cuerpo: 'Probá con otra foto o mandá el mensaje sin foto. Lo que escribiste no se perdió.'
+        });
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('sending');
+        submitBtn.textContent = TEXTO_BOTON;
+        isSending = false;
+        return;
+      }
       datos.set('foto', lista, lista.name);
     }
 
@@ -312,11 +342,13 @@ function mostrarPopup(modo, { icono, texto, titulo, cuerpo }) {
   thanksIcon.style.animation = '';
 
   thanksModal.classList.add('show');
-  setTimeout(() => closeThanks.focus({ preventScroll: true }), 50);
+  fondoInerte(true);
+  setTimeout(() => closeThanks.focus({ preventScroll: true }), 350);
 }
 
 function cerrarPopup() {
   thanksModal.classList.remove('show');
+  fondoInerte(false);
   if (modoPopup === 'exito') {
     reiniciarFormulario();
   } else if (!book.classList.contains('open')) {
@@ -340,9 +372,8 @@ function reiniciarFormulario() {
 }
 
 // ══════════════════════════════════════════════════════════════════════
-//  PERRITA QUE ESPÍA — misma lógica que "FAU PEEK" de Cumple Fau 2026:
-//  sube, se sacude y vuelve a bajar despacio. El original cambiaba a
-//  fau2.png durante la sacudida; acá hay una sola imagen.
+//  PERRITA QUE ESPÍA — misma lógica que el "peek" del proyecto anterior:
+//  sube, se sacude y vuelve a bajar despacio.
 // ══════════════════════════════════════════════════════════════════════
 
 (function () {
@@ -445,14 +476,30 @@ thanksModal.addEventListener('click', e => { if (e.target === thanksModal) cerra
 
 let infoPrimeraVez = true;
 
+// Con un modal abierto, el resto de la página no recibe foco ni clics
+let focoPrevio = null;
+
+function fondoInerte(si) {
+  [scene, infoBtn, document.getElementById('perritaWrap')].forEach(el => {
+    if (!el) return;
+    if (si) el.setAttribute('inert', ''); else el.removeAttribute('inert');
+  });
+}
+
 function abrirInfo() {
+  focoPrevio = document.activeElement;
   infoModal.classList.add('show');
   scene.classList.add('behind-modal');
+  fondoInerte(true);
+  setTimeout(() => infoOpen.focus({ preventScroll: true }), 350);   // tras la transición (visibility)
 }
 
 function cerrarInfo() {
   infoModal.classList.remove('show');
   scene.classList.remove('behind-modal');
+  fondoInerte(false);
+  if (focoPrevio && focoPrevio !== document.body && document.contains(focoPrevio)) focoPrevio.focus({ preventScroll: true });
+  else cover.focus({ preventScroll: true });
   if (infoPrimeraVez) {
     infoPrimeraVez = false;
     scene.classList.add('visible');

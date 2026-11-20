@@ -655,8 +655,8 @@ textarea:hover,
 
 
 /* ══════════════════════════════════════════════════════════════════════
-   PERRITA QUE ESPÍA — mismos keyframes y tiempos que "fau-peek" del
-   original. El wrapper maneja la altura; la imagen, la sacudida.
+   PERRITA QUE ESPÍA — misma secuencia que el "peek" del proyecto anterior
+   (asoma, se esconde, sube, baja), con un ciclo más corto. El wrapper maneja la altura; la imagen, la sacudida.
    Asoma abajo a la derecha. Sube entera (se ven las patitas) salvo que
    no haya lugar debajo del libro: index.js calcula --asomo para que
    nunca tape campos ni botones.
@@ -673,17 +673,17 @@ textarea:hover,
 }
 
 .perrita-wrap.peeking{
-  animation:perritaPeekLoop 13s linear 1.5s infinite;
+  animation:perritaPeekLoop 5s linear .5s infinite;
 }
 
 @keyframes perritaPeekLoop{
-  0%,8%    { transform:translateY(110%); }
-  8%       { animation-timing-function:ease-out; }
-  32%,46%  { transform:translateY(73%); }
-  46%      { animation-timing-function:ease-out; }
-  60%,76%  { transform:translateY(var(--asomo)); }
-  76%      { animation-timing-function:ease-in; }
-  88%,100% { transform:translateY(110%); }
+  0%,3%    { transform:translateY(110%); }
+  3%       { animation-timing-function:ease-out; }
+  22%,38%  { transform:translateY(73%); }
+  38%      { animation-timing-function:ease-out; }
+  55%,78%  { transform:translateY(var(--asomo)); }
+  78%      { animation-timing-function:ease-in; }
+  94%,100% { transform:translateY(110%); }
 }
 
 .perrita-peek{
@@ -779,7 +779,7 @@ textarea:hover,
     height:34px;
   }
 
-  .perrita-wrap.peeking{ animation-delay:.9s; }
+  .perrita-wrap.peeking{ animation-delay:.3s; }
 
   .perrita-peek{ width:clamp(96px, 27vw, 124px); }
 
