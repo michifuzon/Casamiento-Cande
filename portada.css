@@ -461,7 +461,7 @@ button{
 
 .fs-1 { --t:74px; left:1.5vw;  top:13vh;    transform:rotate(-12deg); }
 .fs-2 { --t:84px; left:1.2vw;  top:50vh;    transform:rotate(14deg); }
-.fs-3 { --t:66px; left:3.5vw;  bottom:5vh;  transform:rotate(-8deg); }
+.fs-3 { --t:66px; left:3.5vw;  bottom:36vh; transform:rotate(-8deg); }   /* arriba de la perrita */
 .fs-4 { --t:48px; right:1.6vw; top:17vh;    transform:rotate(12deg); }
 .fs-5 { --t:66px; right:1.8vw; bottom:36vh; transform:rotate(22deg); }   /* arriba de la perrita */
 .fs-6 { --t:72px; right:22vw;  bottom:1vh;  transform:rotate(-12deg); }   /* a la izquierda de la perrita */
@@ -825,7 +825,8 @@ button{
   .fs-4 { right:22vw; top:1vh; transform:rotate(70deg); }
   .fs-5 { right:-1vw; bottom:24vh; }
   .fs-7 { right:40vw; top:2vh; }
-  .fs-8 { left:8vw;   bottom:1.5vh; }
+  .fs-8 { left:auto; right:28vw; bottom:1.5vh; }   /* lejos de la perrita */
+  .fs-3 { bottom:20vh; }
   .fs-6 { right:46vw;  bottom:1.5vh; }   /* lejos de la perrita que asoma */
   .fs-9 { left:30vw;  top:.5vh; }
   .fs-10{ right:4vw;  top:3vh; display:none; }

@@ -387,9 +387,10 @@ function reiniciarFormulario() {
     const alto  = peek.offsetHeight;
     if (!alto) return;
     const libro  = book.getBoundingClientRect();
-    const campos = form.getBoundingClientRect();
+    const campos = form.querySelector('.form-fields').getBoundingClientRect();
+    const izq    = wrap.getBoundingClientRect().left;
     // ¿La perrita quedaría debajo de la columna de campos?
-    const solapa = campos.right > window.innerWidth - peek.offsetWidth;
+    const solapa = campos.left < izq + peek.offsetWidth && campos.right > izq;
     const lugar  = solapa ? window.innerHeight - libro.bottom - 6 : alto;
     const pct    = Math.min(60, Math.max(12, (1 - lugar / alto) * 100));   // 12%: el borde del recorte queda escondido
     wrap.style.setProperty('--asomo', pct.toFixed(1) + '%');

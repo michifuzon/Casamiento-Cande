@@ -657,7 +657,8 @@ textarea:hover,
 /* ══════════════════════════════════════════════════════════════════════
    PERRITA QUE ESPÍA — misma secuencia que el "peek" del proyecto anterior
    (asoma, se esconde, sube, baja), con un ciclo más corto. El wrapper maneja la altura; la imagen, la sacudida.
-   Asoma abajo a la derecha. Sube entera (se ven las patitas) salvo que
+   Asoma abajo a la IZQUIERDA (a la derecha Netlify muestra su cartel
+   "Powered by Netlify"). Sube casi entera salvo que
    no haya lugar debajo del libro: index.js calcula --asomo para que
    nunca tape campos ni botones.
    ══════════════════════════════════════════════════════════════════════ */
@@ -666,7 +667,7 @@ textarea:hover,
   --asomo:12%;
   position:fixed;
   bottom:0;
-  right:0;
+  left:clamp(8px, 2vw, 32px);
   z-index:90;
   transform:translateY(110%);
   pointer-events:none;
