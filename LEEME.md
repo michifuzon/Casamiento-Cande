@@ -41,7 +41,7 @@ Sitio: **casamientocande.netlify.app** (sitio propio, separado del cumpleaños).
 3. *Deploys → Trigger deploy* (o hacer un push).
 4. Probar: en *Forms* tiene que aparecer `mensajes-candela`. Mandar un mensaje de prueba, abrir el libro con la clave y después borrar el envío de prueba desde *Forms*.
 
-La vista previa al compartir por WhatsApp usa `assets/og-cuadrada.jpg` (cuadrada, para la miniatura de WhatsApp) con la dirección absoluta del sitio. Si cambia el dominio, actualizar `og:url` y `og:image` en `index.html`. WhatsApp guarda la vista previa en caché un tiempo.
+La vista previa al compartir por WhatsApp usa `assets/og-miniatura.jpg` (280×280: WhatsApp la muestra como miniatura chica al costado; una imagen grande la mostraría gigante) con la dirección absoluta del sitio. Si cambia el dominio, actualizar `og:url` y `og:image` en `index.html`. WhatsApp guarda la vista previa en caché un tiempo.
 
 ## Vista previa local
 
